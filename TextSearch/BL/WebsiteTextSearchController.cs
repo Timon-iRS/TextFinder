@@ -83,7 +83,7 @@ namespace TextSearch
             SearchControllerState = ControllerState.Cancel;
         }
 
-        public async Task ProcessFoundUrls(List<string> foundUrls)
+        async Task ProcessFoundUrls(List<string> foundUrls)
         {
             var tasks = new List<Task<List<string>>>();
 
@@ -113,7 +113,6 @@ namespace TextSearch
 
                                     return await process.StartAsync();
                                 }
-                                return new List<string>();
                             }
                             return new List<string>();
                         }
