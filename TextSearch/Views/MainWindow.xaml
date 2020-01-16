@@ -1,0 +1,72 @@
+﻿<Window x:Class="TextSearch.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TextSearch"
+        xmlns:vm="clr-namespace:TextSearch.ViewModels"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"    
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="1200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.25*"/>
+            <RowDefinition Height="0.05*"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Margin="5,0">
+                <Label Content="Start Url"/>
+                <TextBox x:Name="StartUrlTextBox" Text="https://www.amazon.com/" Width="180" Height="40"/>
+            </StackPanel>
+            <StackPanel Margin="5,0">
+                <Label Content="Max thead count(not more then 10)"/>
+                <syncfusion:UpDown x:Name="MaxThreadUpDown" Width="180" NumberDecimalDigits="0" Value="5" Step="1" MaxValue="10" MinValue="1" Height="40"/>
+            </StackPanel>
+            <StackPanel Margin="5,0">
+                <Label Content="Search text"/>
+                <TextBox x:Name="SearchTextTextBox" Text="amazon" Width="180" Height="40"/>
+            </StackPanel>
+            <StackPanel Margin="5,0">
+                <Label Content="Max scan url count"/>
+                <syncfusion:UpDown x:Name="MaxUrlUpDown" NumberDecimalDigits="0" Value="50" Step="10" MinValue="1" Width="180" Height="40"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Orientation="Horizontal">
+            <Button Content="Start" Click="StartButtonClick" Margin="10" Width="40" Height="40"/>
+            <Button Content="{Binding PauseResume, UpdateSourceTrigger=PropertyChanged}" Click="PauseResumeButtonClick" Margin="10" Width="60" Height="40"/>
+            <Button Content="Stop" Click="StopButtonClick" Margin="10" Width="40" Height="40"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="1" Text="{Binding SearchStatus, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <ListView HorizontalAlignment="Stretch" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Stretch" ItemsSource="{Binding TextFinders, UpdateSourceTrigger=PropertyChanged}">
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type vm:TextSearchListViewItemViewModel}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="300"/>
+                            <ColumnDefinition Width="300"/>
+                            <ColumnDefinition Width="300"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Width="200" TextTrimming="CharacterEllipsis" Text="{Binding SearchingPath}"/>
+                        <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding SearchState, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Grid.Column="2" HorizontalAlignment="Center" Width="200" TextWrapping="WrapWithOverflow" Margin="5,0" Text="{Binding ErrorText, UpdateSourceTrigger=PropertyChanged}"/>
+                        <StackPanel HorizontalAlignment="Right" Grid.Column="3" Orientation="Horizontal">
+                            <Button Content="{Binding PauseResume, UpdateSourceTrigger=PropertyChanged}" Command="{Binding PauseResumeCommand}" Margin="10" Width="60" Height="40"/>
+                            <Button Content="Stop" Command="{Binding StopCommand}" Margin="10" Width="40" Height="40"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Window>
